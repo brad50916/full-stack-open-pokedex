@@ -13,14 +13,14 @@ jobs:
         run: |
           echo "Hello World!"
 
-  Now it is:
+  Now_it_is:
     runs-on: ubuntu-20.04
     steps:
       - name: print date
         run: |
           date
 
-  Dictory content:
+  Dictory_content:
     runs-on: ubuntu-20.04
     steps:
       - name: print files
