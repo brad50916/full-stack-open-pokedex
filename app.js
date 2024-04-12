@@ -3,7 +3,7 @@ const app = express()
 
 // get the port from env variable
 // test comment1234
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5001
 
 app.use(express.static('dist'))
 
