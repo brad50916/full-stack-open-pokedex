@@ -10,7 +10,8 @@
     "p_test": "playwright test",
     "p_test:report": "playwright show-report",
     "eslint": "eslint './**/*.{js,jsx}'",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "deploy": "npm run build && git add . && git commit -m build && git push"
   },
   "repository": {
     "type": "git",
