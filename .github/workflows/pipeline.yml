@@ -17,12 +17,10 @@ jobs:
         if: ${{ github.event_name == 'push' }}  
         run: curl POST https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}
 
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: print hello
-        run: echo "Hello, world!"
+      # - uses: actions/checkout@v4
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
       # - name: Install dependencies
       #   run: npm install
       # - name: Check style
@@ -35,3 +33,15 @@ jobs:
       #   run: npx playwright install --with-deps   
       # - name: Run Playwright tests
       #   run: npm run p_test
+    
+  tag_release:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.69.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          PATCH_STRING_TOKEN: "patch"
+        if: ${{ github.event_name == 'push' }}  
