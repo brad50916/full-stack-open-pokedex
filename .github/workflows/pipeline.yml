@@ -9,18 +9,13 @@ on:
     types: [opened, synchronize]
 
 jobs:
-
-  simple_deployment_pipeline:
+  eslint:
     runs-on: ubuntu-20.04
     steps:
-      - name: Trigger deployment
-        if: ${{ github.event_name == 'push' }}  
-        run: curl POST https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}
-
-      # - uses: actions/checkout@v4
-      # - uses: actions/setup-node@v4
-      #   with:
-      #     node-version: '20'
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
       # - name: Install dependencies
       #   run: npm install
       # - name: Check style
@@ -33,6 +28,13 @@ jobs:
       #   run: npx playwright install --with-deps   
       # - name: Run Playwright tests
       #   run: npm run p_test
+
+  simple_deployment_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Trigger deployment
+        if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip') }}  
+        run: curl POST https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}
     
   tag_release:
     needs: [simple_deployment_pipeline]
@@ -41,26 +43,9 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v4
       - name: Bump version and push tag
-        if: ${{ github.event_name == 'push' }}  
+        if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip') }}  
         uses: anothrNick/github-tag-action@1.69.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: patch
-
-  a_test_job:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v4
-      - name: github context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: commits
-        env:
-          COMMITS: ${{ toJson(github.event.commits) }}
-        run: echo "$COMMITS"
-      - name: commit messages
-        env:
-          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
-        run: echo "$COMMIT_MESSAGES"
