@@ -43,5 +43,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
-          PATCH_STRING_TOKEN: "patch"
+          # PATCH_STRING_TOKEN: "#patch"
         if: ${{ github.event_name == 'push' }}  
