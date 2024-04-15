@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Trigger deployment
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        if: ${{ github.event_name == 'push' }}  
         run: curl POST https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}
 
       - uses: actions/checkout@v4
