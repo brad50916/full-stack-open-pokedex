@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Trigger deployment
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+        run: curl POST https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}
 
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
